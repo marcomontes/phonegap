@@ -1,46 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE HTML>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width; height=device-height; user-scalable=no" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>MAP</title>
-    <link rel="stylesheet" href="/master.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    <script type="text/javascript" src="cordova-2.7.0.js"></script>
-    <script type="text/javascript">
+<head>
+<meta charset="UTF-8">
+<title>Geolocation</title>
+<script type="text/javascript" src="cordova-2.7.0.js"></script>
+<script>
 
-      function onLoad() {
-        document.addEventListener("deviceready", onDeviceReady, false);
-      }
+document.addEventListener("deviceready", function() {
+  navigator.geolocation.getCurrentPosition(function(posicion) {
+    alert("Se te ha ubicado en " + posicion.coords.latitude + " y " + posicion.coords.longitude);
+  }, function() {
+    alert("No se ha podido ubicar a tu dispositivo");
+  });
 
-      function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError,{'enableHighAccuracy':true,'timeout':10000});
-      }
+  navigator.compass.watchHeading(function(posicion) {
+    alert(posicion.magneticHeading);
+  }, function() {
+    alert("No se ha podido leer la brújula");
+  });
+}, false);
 
-      //GEOLOCATION
-      var onSuccess = function(position) {
-        alert('Latitude: '  + position.coords.latitude   + '\n' + 'Longitude: ' + position.coords.longitude  + '\n');
-        var myLat = position.coords.latitude;
-        var myLong = position.coords.longitude;
+</script>
+</head>
 
-        //MAP
-        var mapOptions = {
-          center: new google.maps.LatLng(myLat, myLong),
-          zoom: 14,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-      };
+<body>
 
-      // onError Callback receives a PositionError object
-      //
-      function onError(error) {
-        alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-      }
-    </script>
-  </head>
-  <body onload="onLoad()">
-    <div id="map_canvas" style="width:400px; height:400px"></div>
-  </body>
+</body>
 </html>
